@@ -1,171 +1,197 @@
 import ConexaoMySql from "../database/ConexaoMySql.js";
 
 class ClienteController {
-
+  // Adicionar Cliente
   async adicionar(req, resp) {
     try {
-      const novoCliente = req.body;
-      const usuarioLogadoId = req.headers["x-usuario-id"]; 
+      const { nome, email, celular, cpf, cargo, pis, cep, rua, numero, bairro, cidade } = req.body;
 
-      if (!usuarioLogadoId) {
-        resp.status(400).send("Usuário não autenticado.");
-        return;
+      if (!nome || !cpf) {
+        return resp.status(400).send("Os campos nome e CPF são obrigatórios.");
       }
 
-    
-      if (!novoCliente.nome || !novoCliente.cpf) {
-        resp.status(400).send("Os campos nome e CPF são obrigatórios.");
-        return;
-      }
-
+      const usuarioId = req.usuarioId;
       const conexao = await new ConexaoMySql().getConexao();
-      const [usuarioExistente] = await conexao.execute(
-        "SELECT id FROM usuarios WHERE id = ?",
-        [usuarioLogadoId]
-      );
-
-      if (usuarioExistente.length === 0) {
-        resp.status(400).send("Usuário não encontrado.");
-        return;
-      }
-
-      
-      const comandoSql = "INSERT INTO clientes (nome, email, celular, data_nascimento, cpf, cargo, pis, cep, rua, numero, bairro, cidade, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      const comandoSql = `
+        INSERT INTO clientes (
+          nome, email, celular, cpf, cargo, pis, cep, rua, numero, bairro, cidade, usuario_id
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
 
       const [resultado] = await conexao.execute(comandoSql, [
-        novoCliente.nome,
-        novoCliente.email,
-        novoCliente.celular,
-        novoCliente.data_nascimento,
-        novoCliente.cpf,
-        novoCliente.cargo,
-        novoCliente.pis,
-        novoCliente.cep,
-        novoCliente.rua,
-        novoCliente.numero,
-        novoCliente.bairro,
-        novoCliente.cidade,
-        usuarioLogadoId, // Associar o cliente ao usuário logado
+        nome,
+        email,
+        celular,
+        cpf,
+        cargo,
+        pis,
+        cep,
+        rua,
+        numero,
+        bairro,
+        cidade,
+        usuarioId,
       ]);
 
-      resp.send({ mensagem: "Cliente cadastrado com sucesso", resultado });
+      resp.status(201).send({
+        message: "Cliente cadastrado com sucesso!",
+        clienteId: resultado.insertId,
+      });
     } catch (error) {
       if (error.code === "ER_DUP_ENTRY") {
         resp.status(400).send("CPF já cadastrado.");
         return;
       }
-      resp.status(500).send(error);
+      console.error("Erro ao cadastrar cliente:", error);
+      resp.status(500).send("Erro ao cadastrar cliente.");
     }
   }
 
+  // Buscar Cliente por ID
+  async buscarPorId(req, resp) {
+    try {
+      const clienteId = req.params.id;
+      const usuarioId = req.usuarioId;
+
+      console.log("Buscando cliente por ID:", { clienteId, usuarioId });
+
+      if (!clienteId) {
+        return resp.status(400).send("ID do cliente é obrigatório.");
+      }
+
+      const conexao = await new ConexaoMySql().getConexao();
+      const [resultado] = await conexao.execute(
+        "SELECT * FROM clientes WHERE id_cliente = ? AND usuario_id = ?",
+        [clienteId, usuarioId]
+      );
+
+      console.log("Resultado da busca:", resultado);
+
+      if (resultado.length === 0) {
+        return resp.status(404).send("Cliente não encontrado.");
+      }
+
+      resp.send(resultado[0]);
+    } catch (error) {
+      console.error("Erro ao buscar cliente por ID:", error);
+      resp.status(500).send("Erro ao buscar cliente.");
+    }
+  }
+
+  // Listar Clientes
   async listar(req, resp) {
     try {
-      const usuarioLogadoId = req.headers["x-usuario-id"]; // Obtém o ID do usuário logado
-
-      if (!usuarioLogadoId) {
-        resp.status(400).send("Usuário não autenticado.");
-        return;
-      }
+      const usuarioId = req.usuarioId;
+      console.log("Listando clientes para o usuário:", usuarioId);
 
       const conexao = await new ConexaoMySql().getConexao();
-      const comandoSql = "SELECT * FROM clientes WHERE usuario_id = ?";
+      const [resultado] = await conexao.execute(
+        "SELECT * FROM clientes WHERE usuario_id = ?",
+        [usuarioId]
+      );
 
-      const [resultado] = await conexao.execute(comandoSql, [usuarioLogadoId]);
-
+      console.log("Clientes encontrados:", resultado);
       resp.send(resultado);
     } catch (error) {
-      resp.status(500).send(error);
+      console.error("Erro ao listar clientes:", error);
+      resp.status(500).send("Erro ao listar clientes.");
     }
   }
 
+  // Atualizar Cliente
   async atualizar(req, resp) {
     try {
-      const clienteEditar = req.body;
-      const usuarioLogadoId = req.headers["x-usuario-id"];
+      const clienteId = req.params.id;
+      const usuarioId = req.usuarioId;
+      const { nome, email, celular, cpf, cargo, pis, cep, rua, numero, bairro, cidade } = req.body;
 
-      if (!usuarioLogadoId) {
-        resp.status(400).send("Usuário não autenticado.");
-        return;
-      }
+      console.log("Dados recebidos para atualização:", {
+        clienteId,
+        usuarioId,
+        nome,
+        email,
+        celular,
+        cpf,
+        cargo,
+        pis,
+        cep,
+        rua,
+        numero,
+        bairro,
+        cidade,
+      });
 
-      if (!clienteEditar.id_cliente || !clienteEditar.nome || !clienteEditar.cpf) {
-        resp.status(400).send("Os campos id_cliente, nome e CPF são obrigatórios.");
-        return;
+      if (!clienteId || !nome || !cpf) {
+        console.error("Erro: Campos obrigatórios ausentes.");
+        return resp.status(400).send("Os campos nome e CPF são obrigatórios.");
       }
 
       const conexao = await new ConexaoMySql().getConexao();
-      const [clienteExistente] = await conexao.execute(
-        "SELECT usuario_id FROM clientes WHERE id_cliente = ?",
-        [clienteEditar.id_cliente]
-      );
+      const comandoSql = `
+        UPDATE clientes 
+        SET nome = ?, email = ?, celular = ?, cpf = ?, cargo = ?, pis = ?, cep = ?, rua = ?, numero = ?, bairro = ?, cidade = ? 
+        WHERE id_cliente = ? AND usuario_id = ?
+      `;
 
-      if (clienteExistente.length === 0) {
-        resp.status(400).send("Cliente não encontrado.");
-        return;
-      }
-
-      if (clienteExistente[0].usuario_id !== usuarioLogadoId) {
-        resp.status(403).send("Você não tem permissão para editar esse cliente.");
-        return;
-      }
-
-      const comandoSql = "UPDATE clientes SET nome = ?, email = ?, celular = ?, data_nascimento = ?, cpf = ?, cargo = ?, pis = ?, cep = ?, rua = ?, numero = ?, bairro = ?, cidade = ?, usuario_id = ? WHERE id_cliente = ?";
+      console.log("Comando SQL:", comandoSql);
 
       const [resultado] = await conexao.execute(comandoSql, [
-        clienteEditar.nome,
-        clienteEditar.email,
-        clienteEditar.celular,
-        clienteEditar.data_nascimento,
-        clienteEditar.cpf,
-        clienteEditar.cargo,
-        clienteEditar.pis,
-        clienteEditar.cep,
-        clienteEditar.rua,
-        clienteEditar.numero,
-        clienteEditar.bairro,
-        clienteEditar.cidade,
-        usuarioLogadoId,
-        clienteEditar.id_cliente,
+        nome,
+        email,
+        celular,
+        cpf,
+        cargo,
+        pis,
+        cep,
+        rua,
+        numero,
+        bairro,
+        cidade,
+        clienteId,
+        usuarioId,
       ]);
 
-      resp.send({ mensagem: "Cliente atualizado com sucesso", resultado });
+      console.log("Resultado da atualização:", resultado);
+
+      if (resultado.affectedRows === 0) {
+        console.warn("Cliente não encontrado ou não autorizado.");
+        return resp.status(404).send("Cliente não encontrado ou não autorizado.");
+      }
+
+      resp.send("Cliente atualizado com sucesso.");
     } catch (error) {
-      resp.status(500).send(error);
+      console.error("Erro ao atualizar cliente:", error);
+      resp.status(500).send("Erro ao atualizar cliente.");
     }
   }
 
+  // Excluir Cliente
   async excluir(req, resp) {
     try {
-      const usuarioLogadoId = req.headers["x-usuario-id"];
+      const clienteId = req.params.id;
+      const usuarioId = req.usuarioId;
 
-      if (!usuarioLogadoId) {
-        resp.status(400).send("Usuário não autenticado.");
-        return;
+      console.log("Tentando excluir cliente:", { clienteId, usuarioId });
+
+      if (!clienteId) {
+        return resp.status(400).send("ID do cliente é obrigatório.");
       }
 
       const conexao = await new ConexaoMySql().getConexao();
+      const comandoSql = "DELETE FROM clientes WHERE id_cliente = ? AND usuario_id = ?";
 
-      const [clienteExistente] = await conexao.execute(
-        "SELECT usuario_id FROM clientes WHERE id_cliente = ?",
-        [+req.params.id_cliente]
-      );
+      const [resultado] = await conexao.execute(comandoSql, [clienteId, usuarioId]);
 
-      if (clienteExistente.length === 0) {
-        resp.status(400).send("Cliente não encontrado.");
-        return;
+      console.log("Resultado da exclusão:", resultado);
+
+      if (resultado.affectedRows === 0) {
+        return resp.status(404).send("Cliente não encontrado ou não autorizado.");
       }
 
-      if (clienteExistente[0].usuario_id !== usuarioLogadoId) {
-        resp.status(403).send("Você não tem permissão para excluir esse cliente.");
-        return;
-      }
-
-      const comandoSql = "DELETE FROM clientes WHERE id_cliente = ?";
-      const [resultado] = await conexao.execute(comandoSql, [+req.params.id_cliente]);
-
-      resp.send({ mensagem: "Cliente excluído com sucesso", resultado });
+      resp.send("Cliente excluído com sucesso.");
     } catch (error) {
-      resp.status(500).send(error);
+      console.error("Erro ao excluir cliente:", error);
+      resp.status(500).send("Erro ao excluir cliente.");
     }
   }
 }

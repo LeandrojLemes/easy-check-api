@@ -1,94 +1,68 @@
 import ConexaoMySql from "../database/ConexaoMySql.js";
 
 class UsuariosController {
-  async adicionar(req, resp) {
+  async adicionar(req, res) {
     try {
-      const novoUsuario = req.body;
+      const { nome, email, senha } = req.body;
 
-      if (!novoUsuario.nome || !novoUsuario.email || !novoUsuario.senha) {
-        resp
-          .status(400)
-          .send("Os campos nome, email e senha são obrigatórios.");
+      if (!nome || !email || !senha) {
+        res.status(400).send("Os campos nome, email e senha são obrigatórios.");
         return;
       }
 
       const conexao = await new ConexaoMySql().getConexao();
-      const comandoSql =
-        "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, md5(?))";
+      const comandoSql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, MD5(?))";
+      await conexao.execute(comandoSql, [nome, email, senha]);
 
-      const [resultado] = await conexao.execute(comandoSql, [
-        novoUsuario.nome,
-        novoUsuario.email,
-        novoUsuario.senha,
-      ]);
-
-      resp.send(resultado);
+      res.status(201).send("Usuário cadastrado com sucesso.");
     } catch (error) {
       if (error.code === "ER_DUP_ENTRY") {
-        resp.status(400).send("Email já cadastrado.");
-        return;
+        res.status(400).send("Email já cadastrado.");
+      } else {
+        res.status(500).send("Erro ao cadastrar usuário.");
       }
-      resp.status(500).send(error);
     }
   }
 
-  async listar(req, resp) {
+  async listar(req, res) {
     try {
-      const usuarioLogado = req.headers["x-usuario"];
-      console.log(usuarioLogado);
-
       const conexao = await new ConexaoMySql().getConexao();
-      const comandoSql = "SELECT * FROM usuarios WHERE nome LIKE ?";
-
-      const filtro = req.query.filtro || "";
-      const [resultado] = await conexao.execute(comandoSql, [`%${filtro}%`]);
-      resp.send(
-        resultado.map((u) => {
-          delete u.senha;
-          return u;
-        })
-      );
+      const [resultado] = await conexao.execute("SELECT id, nome, email FROM usuarios");
+      res.send(resultado);
     } catch (error) {
-      resp.status(500).send(error);
+      res.status(500).send("Erro ao listar usuários.");
     }
   }
 
-  async atualizar(req, resp) {
+  async atualizar(req, res) {
     try {
-      const usuarioEditar = req.body;
+      const { id, nome, email } = req.body;
 
-      if (!usuarioEditar.id || !usuarioEditar.nome || !usuarioEditar.email) {
-        resp.status(400).send("Os campos id, nome e email são obrigatórios.");
+      if (!id || !nome || !email) {
+        res.status(400).send("Os campos id, nome e email são obrigatórios.");
         return;
       }
 
       const conexao = await new ConexaoMySql().getConexao();
-      const comandoSql =
-        "UPDATE usuarios SET nome = ?, email = ?, foto = ? WHERE id = ?";
+      const comandoSql = "UPDATE usuarios SET nome = ?, email = ? WHERE id = ?";
+      await conexao.execute(comandoSql, [nome, email, id]);
 
-      const [resultado] = await conexao.execute(comandoSql, [
-        usuarioEditar.nome,
-        usuarioEditar.email,
-        usuarioEditar.foto || null,
-        usuarioEditar.id,
-      ]);
-
-      resp.send(resultado);
+      res.send("Usuário atualizado com sucesso.");
     } catch (error) {
-      resp.status(500).send(error);
+      res.status(500).send("Erro ao atualizar usuário.");
     }
   }
 
-  async excluir(req, resp) {
+  async excluir(req, res) {
     try {
+      const { id } = req.params;
       const conexao = await new ConexaoMySql().getConexao();
-
       const comandoSql = "DELETE FROM usuarios WHERE id = ?";
-      const [resultado] = await conexao.execute(comandoSql, [+req.params.id]);
+      await conexao.execute(comandoSql, [id]);
 
-      resp.send(resultado);
+      res.send("Usuário excluído com sucesso.");
     } catch (error) {
-      resp.status(500).send(error);
+      res.status(500).send("Erro ao excluir usuário.");
     }
   }
 }
