@@ -1,7 +1,7 @@
 import ConexaoMySql from "../database/ConexaoMySql.js";
 
 class ClienteController {
-  // Adicionar Cliente
+
   async adicionar(req, resp) {
     try {
       const { nome, email, celular, cpf, cargo, pis, cep, rua, numero, bairro, cidade } = req.body;
@@ -47,7 +47,7 @@ class ClienteController {
     }
   }
 
-  // Buscar Cliente por ID
+  
   async buscarPorId(req, resp) {
     try {
       const clienteId = req.params.id;
@@ -78,7 +78,7 @@ class ClienteController {
     }
   }
 
-  // Listar Clientes
+ 
   async listar(req, resp) {
     try {
       const usuarioId = req.usuarioId;
@@ -98,7 +98,7 @@ class ClienteController {
     }
   }
 
-  // Atualizar Cliente
+
   async atualizar(req, resp) {
     try {
       const clienteId = req.params.id;
@@ -165,7 +165,7 @@ class ClienteController {
     }
   }
 
-  // Excluir Cliente
+
   async excluir(req, resp) {
     try {
       const clienteId = req.params.id;
