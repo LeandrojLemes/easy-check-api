@@ -47,7 +47,7 @@ class AutenticacaoController {
 
       res.send(resultado[0]);
     } catch (error) {
-      console.error("Erro ao realizar login:", error.message); // Ajustado para log mais específico
+      console.error("Erro ao realizar login:", error.message);
       res.status(500).send("Erro ao realizar login.");
     }
   }
