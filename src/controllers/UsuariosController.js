@@ -4,6 +4,7 @@ class UsuariosController {
   async adicionar(req, res) {
     try {
       const { nome, email, senha } = req.body;
+      console.log("nome: ", nome)
 
       if (!nome || !email || !senha) {
         res.status(400).send("Os campos nome, email e senha são obrigatórios.");
