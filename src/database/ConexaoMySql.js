@@ -21,7 +21,7 @@ const dbConfig = {
   port:     process.env.MYSQL_PORT     || "49202",
   user:     process.env.MYSQL_USER     || "root",
   password: process.env.MYSQL_PWD      || "PWDwtOPpMdMlEBrerwRPELBtWKniSEPy",
-  database: process.env.MYSQL_DB       || "MySQL",
+  database: process.env.MYSQL_DB       || "railway",
 };
 
  
