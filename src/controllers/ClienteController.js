@@ -6,7 +6,7 @@ class ClienteController {
     try {
       const { nome, email, celular, cpf, cargo, pis, cep, rua, numero, bairro, cidade } = req.body;
 
-      if (!nome || !cpf) {
+      if (this.validaCliente(nome, cpf)) {
         return resp.status(400).send("Os campos nome e CPF são obrigatórios.");
       }
 
@@ -44,6 +44,14 @@ class ClienteController {
       }
       console.error("Erro ao cadastrar cliente:", error);
       resp.status(500).send("Erro ao cadastrar cliente.");
+    }
+  }
+
+  validaCliente(nome, cpf){
+    if(nome && cpf){
+      return true;
+    } else{
+      return false;
     }
   }
 
