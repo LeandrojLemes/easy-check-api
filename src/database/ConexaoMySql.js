@@ -35,3 +35,4 @@ class ConexaoMySql {
   }
 }
 export default ConexaoMySql;
+// teste de banco
