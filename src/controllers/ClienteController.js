@@ -6,7 +6,7 @@ class ClienteController {
     try {
       const { nome, email, celular, cpf, cargo, pis, cep, rua, numero, bairro, cidade } = req.body;
 
-      if (this.validaCliente(nome, cpf)) {
+      if (!this.validaCliente(nome, cpf)) {
         return resp.status(400).send("Os campos nome e CPF são obrigatórios.");
       }
 
