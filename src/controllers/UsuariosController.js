@@ -96,7 +96,7 @@ class UsuariosController {
       }
 
       const conexao = await new ConexaoMySql().getConexao();
-      const comandoSql = "INSERT INTO usuarios ( nome, email, senha,cnpj, nome_empresa,) VALUES (?, ?, MD5(?),?,?)";
+      const comandoSql = "INSERT INTO usuarios (nome, email, senha,cnpj, nome_empresa) VALUES (?, ?, MD5(?),?,?)";
       await conexao.execute(comandoSql, [ nome, email, senha, cnpj, nome_empresa]);
 
       res.status(201).send("Usuário cadastrado com sucesso.");
