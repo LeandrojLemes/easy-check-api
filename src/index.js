@@ -37,7 +37,8 @@
   app.get("/clientes/:id", _clienteController.buscarPorId);
   app.put("/clientes/:id", _clienteController.atualizar);
   app.delete("/clientes/:id", _clienteController.excluir);
-  app.get('/clientes/cpf/:cpf', clienteCtrl.buscarPorCpf.bind(clienteCtrl));
+ app.get('/clientes/cpf/:cpf', _clienteController.buscarPorCpf.bind(_clienteController));
+
 
   const port = process.env.PORT || 3000;
   app.listen(port, () => {
