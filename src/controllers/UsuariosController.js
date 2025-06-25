@@ -86,9 +86,9 @@ class UsuariosController {
       //   return;
       // }
 
-      //  -------------------------- PARA FAZER O TESTE --------------------------
+    
      
-      //  -------------------------- FIM PARA FAZER O TESTE --------------------------
+    
 
       const cnpjLimpo = cnpj.replace(/\D/g, '');
       if (cnpjLimpo.length !== 14) {
@@ -105,12 +105,12 @@ class UsuariosController {
         res.status(400).send("Senha inválida. Deve ter pelo menos 6 caracteres.");
         return;
       }
-       if (!service.validarUsuario(req.body)) {
+        //  -------------------------- PARA FAZER O TESTE --------------------------
+         if (!service.validarUsuario(req.body)) {
         res.status(400).send("Os campos Nome da Empresa, CNPJ, nome, email e senha são obrigatórios.");
         return;
       }
-
-
+        //  -------------------------- FIM PARA FAZER O TESTE --------------------------
       const conexao = await new ConexaoMySql().getConexao();
       const comandoSql = "INSERT INTO usuarios (nome, email, senha,cnpj, nome_empresa) VALUES (?, ?, MD5(?),?,?)";
       await conexao.execute(comandoSql, [nome, email, senha, cnpj, nome_empresa]);
@@ -124,7 +124,6 @@ class UsuariosController {
       }
     }
   }
-
 
 
   async listar(req, res) {
