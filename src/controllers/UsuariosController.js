@@ -87,10 +87,7 @@ class UsuariosController {
       // }
 
       //  -------------------------- PARA FAZER O TESTE --------------------------
-      if (!service.validarUsuario(req.body)) {
-        res.status(400).send("Os campos Nome da Empresa, CNPJ, nome, email e senha são obrigatórios.");
-        return;
-      }
+     
       //  -------------------------- FIM PARA FAZER O TESTE --------------------------
 
       const cnpjLimpo = cnpj.replace(/\D/g, '');
@@ -106,6 +103,10 @@ class UsuariosController {
 
       if (!senha || senha.length < 6) {
         res.status(400).send("Senha inválida. Deve ter pelo menos 6 caracteres.");
+        return;
+      }
+       if (!service.validarUsuario(req.body)) {
+        res.status(400).send("Os campos Nome da Empresa, CNPJ, nome, email e senha são obrigatórios.");
         return;
       }
 
