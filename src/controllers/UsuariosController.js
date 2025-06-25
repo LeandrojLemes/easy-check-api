@@ -72,17 +72,26 @@
 
 
 import ConexaoMySql from "../database/ConexaoMySql.js";
+import UsuariosService from "../services/UsuariosService.js";
 
 class UsuariosController {
   async adicionar(req, res) {
     try {
       const { cnpj, nome_empresa, nome, email, senha } = req.body;
       console.log("nome: ", nome)
+      const service = new UsuariosService()
 
-      if (!cnpj || !nome_empresa || !nome || !email || !senha) {
+      // if (!cnpj || !nome_empresa || !nome || !email || !senha) {
+      //   res.status(400).send("Os campos Nome da Empresa, CNPJ, nome, email e senha são obrigatórios.");
+      //   return;
+      // }
+
+      //  -------------------------- PARA FAZER O TESTE --------------------------
+      if (!service.validarUsuario(req.body)) {
         res.status(400).send("Os campos Nome da Empresa, CNPJ, nome, email e senha são obrigatórios.");
         return;
       }
+      //  -------------------------- FIM PARA FAZER O TESTE --------------------------
 
       const cnpjLimpo = cnpj.replace(/\D/g, '');
       if (cnpjLimpo.length !== 14) {
@@ -95,9 +104,15 @@ class UsuariosController {
         return;
       }
 
+      if (!senha || senha.length < 6) {
+        res.status(400).send("Senha inválida. Deve ter pelo menos 6 caracteres.");
+        return;
+      }
+
+
       const conexao = await new ConexaoMySql().getConexao();
       const comandoSql = "INSERT INTO usuarios (nome, email, senha,cnpj, nome_empresa) VALUES (?, ?, MD5(?),?,?)";
-      await conexao.execute(comandoSql, [ nome, email, senha, cnpj, nome_empresa]);
+      await conexao.execute(comandoSql, [nome, email, senha, cnpj, nome_empresa]);
 
       res.status(201).send("Usuário cadastrado com sucesso.");
     } catch (error) {
