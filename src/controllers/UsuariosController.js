@@ -70,7 +70,6 @@
 
 // export default UsuariosController;
 
-
 import ConexaoMySql from "../database/ConexaoMySql.js";
 import UsuariosService from "../services/UsuariosService.js";
 
@@ -78,42 +77,51 @@ class UsuariosController {
   async adicionar(req, res) {
     try {
       const { cnpj, nome_empresa, nome, email, senha } = req.body;
-      console.log("nome: ", nome)
-      const service = new UsuariosService()
+      console.log("nome: ", nome);
+      const service = new UsuariosService();
 
       // if (!cnpj || !nome_empresa || !nome || !email || !senha) {
       //   res.status(400).send("Os campos Nome da Empresa, CNPJ, nome, email e senha são obrigatórios.");
       //   return;
       // }
 
-    
-     
-    
-
-      const cnpjLimpo = cnpj.replace(/\D/g, '');
+      const cnpjLimpo = cnpj.replace(/\D/g, "");
       if (cnpjLimpo.length !== 14) {
-        res.status(400).send('CNPJ inválido. Deve conter 14 dígitos.');
+        res.status(400).send("CNPJ inválido. Deve conter 14 dígitos.");
         return;
       }
 
-      if (!email.includes('@') || !email.includes('.com')) {
+      if (!email.includes("@") || !email.includes(".com")) {
         res.status(400).send("Formato de Email inválido!");
         return;
       }
 
       if (!senha || senha.length < 6) {
-        res.status(400).send("Senha inválida. Deve ter pelo menos 6 caracteres.");
+        res
+          .status(400)
+          .send("Senha inválida. Deve ter pelo menos 6 caracteres.");
         return;
       }
-        //  -------------------------- PARA FAZER O TESTE --------------------------
-         if (!service.validarUsuario(req.body)) {
-        res.status(400).send("Os campos Nome da Empresa, CNPJ, nome, email e senha são obrigatórios.");
+      //  -------------------------- PARA FAZER O TESTE --------------------------
+      if (!service.validarUsuario(req.body)) {
+        res
+          .status(400)
+          .send(
+            "Os campos Nome da Empresa, CNPJ, nome, email e senha são obrigatórios."
+          );
         return;
       }
-        //  -------------------------- FIM PARA FAZER O TESTE --------------------------
+      //  -------------------------- FIM PARA FAZER O TESTE --------------------------
       const conexao = await new ConexaoMySql().getConexao();
-      const comandoSql = "INSERT INTO usuarios (nome, email, senha,cnpj, nome_empresa) VALUES (?, ?, MD5(?),?,?)";
-      await conexao.execute(comandoSql, [nome, email, senha, cnpj, nome_empresa]);
+      const comandoSql =
+        "INSERT INTO usuarios (nome, email, senha,cnpj, nome_empresa) VALUES (?, ?, MD5(?),?,?)";
+      await conexao.execute(comandoSql, [
+        nome,
+        email,
+        senha,
+        cnpj,
+        nome_empresa,
+      ]);
 
       res.status(201).send("Usuário cadastrado com sucesso.");
     } catch (error) {
@@ -124,12 +132,12 @@ class UsuariosController {
       }
     }
   }
-
-
   async listar(req, res) {
     try {
       const conexao = await new ConexaoMySql().getConexao();
-      const [resultado] = await conexao.execute("SELECT id, nome, email FROM usuarios");
+      const [resultado] = await conexao.execute(
+        "SELECT id, nome, email FROM usuarios"
+      );
       res.send(resultado);
     } catch (error) {
       res.status(500).send("Erro ao listar usuários.");
