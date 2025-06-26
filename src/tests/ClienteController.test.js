@@ -12,7 +12,7 @@ jest.mock('../database/ConexaoMySql.js', () => {
 
 describe('ClienteController.buscarPorCpf', () => {
   // GIVEN um CPF válido
-  it('retorna 200 e o cliente quando encontrado', async () => {
+  test('retorna 200 e o cliente quando encontrado', async () => {
     const req = { params: { cpf: '12345678900' } };
     const res = {
       status: jest.fn().mockReturnThis(),
@@ -33,7 +33,7 @@ describe('ClienteController.buscarPorCpf', () => {
   // GIVEN: Nenhum cliente 
   // WHEN buacar o cpf na função buscarPorCpf
   // THEN retorna erro 404
-  it('retorna 404 quando nenhum cliente for encontrado', async () => {
+  test('retorna 404 quando nenhum cliente for encontrado', async () => {
     ConexaoMySql.mockImplementation(() => ({
       getConexao: () => Promise.resolve({
         execute: () => Promise.resolve([[]]),
