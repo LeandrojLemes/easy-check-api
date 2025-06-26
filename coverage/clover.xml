@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1750899357094" clover="3.2.0">
-  <project timestamp="1750899357094" name="All files">
-    <metrics statements="82" coveredstatements="19" conditionals="40" coveredconditionals="16" methods="10" coveredmethods="5" elements="132" coveredelements="40" complexity="0" loc="82" ncloc="82" packages="2" files="2" classes="2"/>
+<coverage generated="1750973095771" clover="3.2.0">
+  <project timestamp="1750973095771" name="All files">
+    <metrics statements="95" coveredstatements="32" conditionals="52" coveredconditionals="28" methods="13" coveredmethods="8" elements="160" coveredelements="68" complexity="0" loc="95" ncloc="95" packages="2" files="3" classes="3"/>
     <package name="controllers">
       <metrics statements="72" coveredstatements="9" conditionals="25" coveredconditionals="3" methods="6" coveredmethods="1"/>
       <file name="ClienteController.js" path="C:\projetoSa\easy-check-api\src\controllers\ClienteController.js">
@@ -81,7 +81,23 @@
       </file>
     </package>
     <package name="services">
-      <metrics statements="10" coveredstatements="10" conditionals="15" coveredconditionals="13" methods="4" coveredmethods="4"/>
+      <metrics statements="23" coveredstatements="23" conditionals="27" coveredconditionals="25" methods="7" coveredmethods="7"/>
+      <file name="ClienteService.js" path="C:\projetoSa\easy-check-api\src\services\ClienteService.js">
+        <metrics statements="13" coveredstatements="13" conditionals="12" coveredconditionals="12" methods="3" coveredmethods="3"/>
+        <line num="3" count="5" type="stmt"/>
+        <line num="5" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="9" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="13" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="17" count="5" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="27" count="4" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+      </file>
       <file name="UsuariosService.js" path="C:\projetoSa\easy-check-api\src\services\UsuariosService.js">
         <metrics statements="10" coveredstatements="10" conditionals="15" coveredconditionals="13" methods="4" coveredmethods="4"/>
         <line num="3" count="5" type="stmt"/>
