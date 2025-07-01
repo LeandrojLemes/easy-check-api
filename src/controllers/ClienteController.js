@@ -298,6 +298,7 @@ class ClienteController {
         SET nome = ?, email = ?, celular = ?, cpf = ?, cargo = ?, pis = ?, cep = ?, rua = ?, numero = ?, bairro = ?, cidade = ? 
         WHERE id_cliente = ? AND usuario_id = ?
       `;
+      //
 
       const [resultado] = await conexao.execute(comandoSql, [
         nome,
