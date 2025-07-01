@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1751331566168" clover="3.2.0">
-  <project timestamp="1751331566168" name="All files">
-    <metrics statements="99" coveredstatements="51" conditionals="64" coveredconditionals="45" methods="14" coveredmethods="10" elements="177" coveredelements="106" complexity="0" loc="99" ncloc="99" packages="3" files="4" classes="4"/>
+<coverage generated="1751332217584" clover="3.2.0">
+  <project timestamp="1751332217584" name="All files">
+    <metrics statements="111" coveredstatements="63" conditionals="70" coveredconditionals="51" methods="15" coveredmethods="11" elements="196" coveredelements="125" complexity="0" loc="111" ncloc="111" packages="3" files="5" classes="5"/>
     <package name="controllers">
-      <metrics statements="72" coveredstatements="27" conditionals="25" coveredconditionals="10" methods="6" coveredmethods="3"/>
+      <metrics statements="84" coveredstatements="39" conditionals="31" coveredconditionals="16" methods="7" coveredmethods="4"/>
+      <file name="AutenticacaoController.js" path="C:\projetoSa\easy-check-api\src\controllers\AutenticacaoController.js">
+        <metrics statements="12" coveredstatements="12" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
+        <line num="89" count="4" type="stmt"/>
+        <line num="91" count="4" type="stmt"/>
+        <line num="93" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="94" count="1" type="stmt"/>
+        <line num="97" count="3" type="stmt"/>
+        <line num="98" count="3" type="stmt"/>
+        <line num="99" count="3" type="stmt"/>
+        <line num="101" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="102" count="1" type="stmt"/>
+        <line num="105" count="1" type="stmt"/>
+        <line num="107" count="1" type="stmt"/>
+        <line num="108" count="1" type="stmt"/>
+      </file>
       <file name="ClienteController.js" path="C:\projetoSa\easy-check-api\src\controllers\ClienteController.js">
         <metrics statements="72" coveredstatements="27" conditionals="25" coveredconditionals="10" methods="6" coveredmethods="3"/>
         <line num="6" count="3" type="stmt"/>
