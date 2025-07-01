@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1751331115295" clover="3.2.0">
-  <project timestamp="1751331115295" name="All files">
-    <metrics statements="99" coveredstatements="42" conditionals="64" coveredconditionals="41" methods="14" coveredmethods="9" elements="177" coveredelements="92" complexity="0" loc="99" ncloc="99" packages="3" files="4" classes="4"/>
+<coverage generated="1751331566168" clover="3.2.0">
+  <project timestamp="1751331566168" name="All files">
+    <metrics statements="99" coveredstatements="51" conditionals="64" coveredconditionals="45" methods="14" coveredmethods="10" elements="177" coveredelements="106" complexity="0" loc="99" ncloc="99" packages="3" files="4" classes="4"/>
     <package name="controllers">
-      <metrics statements="72" coveredstatements="18" conditionals="25" coveredconditionals="6" methods="6" coveredmethods="2"/>
+      <metrics statements="72" coveredstatements="27" conditionals="25" coveredconditionals="10" methods="6" coveredmethods="3"/>
       <file name="ClienteController.js" path="C:\projetoSa\easy-check-api\src\controllers\ClienteController.js">
-        <metrics statements="72" coveredstatements="18" conditionals="25" coveredconditionals="6" methods="6" coveredmethods="2"/>
-        <line num="6" count="0" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="9" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="36" count="0" type="stmt"/>
+        <metrics statements="72" coveredstatements="27" conditionals="25" coveredconditionals="10" methods="6" coveredmethods="3"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="9" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
         <line num="41" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="42" count="0" type="stmt"/>
         <line num="43" count="0" type="stmt"/>

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/72</span>
+                <span class='fraction'>27/72</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">24% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/25</span>
+                <span class='fraction'>10/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/6</span>
+                <span class='fraction'>3/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/72</span>
+                <span class='fraction'>27/72</span>
             </div>
         
             
@@ -450,24 +450,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -480,7 +478,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -831,23 +831,23 @@
 &nbsp;
 class ClienteController {
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync adicionar(req, resp) {
-<span class="cstat-no" title="statement not covered" >    try {</span>
-      const { nome, email, celular, cpf, cargo, pis, cep, rua, numero, bairro, cidade } = <span class="cstat-no" title="statement not covered" >req.body;</span>
+  async adicionar(req, resp) {
+    try {
+      const { nome, email, celular, cpf, cargo, pis, cep, rua, numero, bairro, cidade } = req.body;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!nome || !cpf) {</span>
-<span class="cstat-no" title="statement not covered" >        return resp.status(400).send("Os campos nome e CPF são obrigatórios.");</span>
+      if (!nome || !cpf) {
+        return resp.status(400).send("Os campos nome e CPF são obrigatórios.");
       }
 &nbsp;
-      const usuarioId = <span class="cstat-no" title="statement not covered" >req.usuarioId;</span>
-      const conexao = <span class="cstat-no" title="statement not covered" >await new ConexaoMySql().getConexao();</span>
-      const comandoSql = <span class="cstat-no" title="statement not covered" >`</span>
+      const usuarioId = req.usuarioId;
+      const conexao = await new ConexaoMySql().getConexao();
+      const comandoSql = `
         INSERT INTO clientes (
           nome, email, celular, cpf, cargo, pis, cep, rua, numero, bairro, cidade, usuario_id
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
 &nbsp;
-      const [resultado] = <span class="cstat-no" title="statement not covered" >await conexao.execute(comandoSql, [</span>
+      const [resultado] = await conexao.execute(comandoSql, [
         nome,
         email,
         celular,
@@ -862,7 +862,7 @@ class ClienteController {
         usuarioId,
       ]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      resp.status(201).send({</span>
+      resp.status(201).send({
         message: "Cliente cadastrado com sucesso!",
         clienteId: resultado.insertId,
       });
@@ -1216,7 +1216,7 @@ export default ClienteController;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-01T00:51:55.284Z
+                at 2025-07-01T00:59:26.156Z
             </div>
         <script src="../prettify.js"></script>
         <script>
